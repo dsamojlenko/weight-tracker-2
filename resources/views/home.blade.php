@@ -14,7 +14,7 @@
 
         <title>Weight-Tracker</title>
 
-        <link rel="stylesheet" href="/css/app.css">
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
         <div id="app">
@@ -35,32 +35,5 @@
                 ])
             </div>
         </div>
-        <script src="{{ mix('js/app.js') }}"></script>
-
-        <script type="text/javascript">
-            /**
-             * When user taps the screen, animate out the alert
-             */
-            const overlay = $('.error-overlay');
-            const modal = $('.error-modal');
-
-            overlay.on('click', function () {
-                $('.alert-message').animate({
-                    top: '-200px'
-                }, 300, function() {
-                    overlay.fadeOut()
-                    modal.fadeOut()
-                });
-            });
-
-            /**
-             * If there is an alert message, animate it in
-             */
-            $('.alert-message').animate({
-                top: '50px'
-            }, 300, function() {
-                console.log("Huzzah");
-            })
-        </script>
     </body>
 </html>

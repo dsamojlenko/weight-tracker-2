@@ -18,8 +18,6 @@
     </head>
     <body>
         <div id="app">
-            @include('notifications')
-
             <div class="flex-none sm:flex h-screen">
                 @include('user_panel', [
                     'user' => $user2

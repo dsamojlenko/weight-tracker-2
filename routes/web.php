@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [Controller::class, 'index']);
-Route::post('/user/{user}/weight', [Controller::class, 'save']);
+Route::get('/', [HomeController::class, 'index']);
+Route::post('/user/{user}/weight', [HomeController::class, 'save']);

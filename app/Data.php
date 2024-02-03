@@ -14,14 +14,30 @@ class Data
             'rgb(54, 162, 235)', 'rgb(75, 192, 192)'
         ]);
 
-        foreach($users as $index => $user) {
+        foreach($users as $user) {
+            $userWeights = $user->weights()->get()->map(function($item) {
+                return [
+                    "weight" => $item->weight,
+                    "date" => $item->created_at->format('Y-m-d'),
+                ];
+            });
+            $weights = collect();
+            $dates = $this->getLabels();
+
+            foreach ($dates as $date) {
+                if ($userWeights->contains('date', $date)) {
+                    $weights->push($userWeights->where('date', $date)->first()['weight']);
+                } else {
+                    $weights->push(null);
+                }
+            }
+            
             $result->push([
-                'label' => $user->name,
-                'data' => $user->weights()->orderBy('created_at')->get()->pluck('weight'),
-                'fill' => false,
-                'borderColor' => $colours[$index]
+                'name' => $user->name,
+                'data' => $weights,
             ]);
         }
+
         return $result;
     }
 
@@ -29,7 +45,7 @@ class Data
         $weights = Weight::orderBy('created_at')->get();
 
         $weights = $weights->groupBy(function ($item) {
-            return Carbon::parse($item['created_at'])->format('M d');
+            return Carbon::parse($item['created_at'])->format('Y-m-d');
         })->map(function($item){
             return $item->all();
         });

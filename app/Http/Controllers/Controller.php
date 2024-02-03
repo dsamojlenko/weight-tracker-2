@@ -40,8 +40,8 @@ class Controller extends BaseController
                 'today' => $this->data->getToday($user2),
                 'change' => $this->data->getChange($user2),
             ],
-            'data' => json_encode($this->data->getData()),
-            'labels' => json_encode($this->data->getLabels())
+            'data' => $this->data->getData(),
+            'labels' => $this->data->getLabels()
         ]);
     }
 

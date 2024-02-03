@@ -1,5 +1,22 @@
 @tailwind base;
 
+body {
+    overscroll-behavior-y: auto;
+}
+
+.pull-to-refresh {
+    top: -50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    transition: top 0.7s ease-in-out;
+    @apply fixed h-[50px] inset-x-0 z-50 border border-slate-600 bg-emerald-50 rounded-md shadow-sm w-3/5 mx-auto px-20;
+}
+
+.pull-to-refresh.visible {
+    top: 10px;
+}
+
 @tailwind components;
 
 @tailwind utilities;

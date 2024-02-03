@@ -1,8 +1,6 @@
-<div class="w-full lg:w-1/2 xl:w-2/3 md:p-4 md:h-full p-4">
-    @include('notifications')
-    <div id="chart"></div>
-</div>
+<div id="chart"></div>
 
+@push("scripts")
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script type="text/javascript">   
@@ -100,3 +98,4 @@
 
     chart.render();
 </script>
+@endpush

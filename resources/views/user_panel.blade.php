@@ -2,7 +2,7 @@
     <h2 class="relative text-2xl mb-4">
         {{ $user['user']->name }}
         <div class="text-base">
-            Total: {{ $user['total']['difference'] }} lbs
+            Total: {{ round($user['total']['difference'], 2) }} lbs
             ({{ round($user['total']['percentage'], 2) }}%)
             @include('change', ['change' => $user['total']['change']])<br>
             @if ($user['today'])

@@ -6,7 +6,8 @@ use Carbon\Carbon;
 
 class Data
 {
-    public function getData() {
+    public function getData()
+    {
         $users = User::all();
         $result = collect();
 
@@ -14,8 +15,8 @@ class Data
             'rgb(54, 162, 235)', 'rgb(75, 192, 192)'
         ]);
 
-        foreach($users as $user) {
-            $userWeights = $user->weights()->get()->map(function($item) {
+        foreach ($users as $user) {
+            $userWeights = $user->weights()->get()->map(function ($item) {
                 return [
                     "weight" => $item->weight,
                     "date" => $item->created_at->format('Y-m-d'),
@@ -31,7 +32,7 @@ class Data
                     $weights->push(null);
                 }
             }
-            
+
             $result->push([
                 'name' => $user->name,
                 'data' => $weights,
@@ -41,12 +42,13 @@ class Data
         return $result;
     }
 
-    public function getLabels() {
+    public function getLabels()
+    {
         $weights = Weight::orderBy('created_at')->get();
 
         $weights = $weights->groupBy(function ($item) {
             return Carbon::parse($item['created_at'])->format('Y-m-d');
-        })->map(function($item){
+        })->map(function ($item) {
             return $item->all();
         });
 
@@ -55,13 +57,14 @@ class Data
         return $dates;
     }
 
-    public function getChange($user) {
+    public function getChange($user)
+    {
         $change = null;
 
-        if($today = $user->weights()->whereDate('created_at', Carbon::today())->first()) {
+        if ($today = $user->weights()->whereDate('created_at', Carbon::today())->first()) {
             $previous = $user->weights()->where('id', '!=', $today->id)->latest('created_at')->first();
 
-            if($previous) {
+            if ($previous) {
                 if ($today->weight > $previous->weight) {
                     return 'up';
                 }
@@ -79,11 +82,37 @@ class Data
         }
     }
 
-    public function getToday($user) {
+    public function getFirst($user)
+    {
+        return $user->weights()->orderBy('created_at')->first();
+    }
+
+    public function getLast($user)
+    {
+        return $user->weights()->orderBy('created_at', 'desc')->first();
+    }
+
+    public function getTotal($user)
+    {
+        $first = $this->getFirst($user);
+        $last = $this->getLast($user);
+        $change = $last === $first ? 'nc' : ($last < $first ? 'up' : 'down');
+
+
+        return [
+            'difference' => $first ? $last->weight - $first->weight : 0,
+            'percentage' => $first ? ($first->weight - $last->weight) / $first->weight * 100 : 0,
+            'change' => $change
+        ];
+    }
+
+    public function getToday($user)
+    {
         return $user->weights()->whereDate('created_at', Carbon::today())->first();
     }
 
-    public function getWeights($user) {
+    public function getWeights($user)
+    {
         return $user->weights()->orderBy('created_at')->get();
     }
 }

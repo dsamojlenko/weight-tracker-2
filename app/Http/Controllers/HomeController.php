@@ -27,12 +27,14 @@ class HomeController extends Controller
                 'weights' => $this->data->getWeights($user1),
                 'today' => $this->data->getToday($user1),
                 'change' => $this->data->getChange($user1),
+                'total' => $this->data->getTotal($user1),
             ],
             'user2' => [
                 'user' => $user2,
                 'weights' => $this->data->getWeights($user2),
                 'today' => $this->data->getToday($user2),
                 'change' => $this->data->getChange($user2),
+                'total' => $this->data->getTotal($user2),
             ],
             'data' => $this->data->getData(),
             'labels' => $this->data->getLabels()

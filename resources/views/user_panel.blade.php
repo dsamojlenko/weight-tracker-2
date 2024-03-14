@@ -2,8 +2,14 @@
     <h2 class="relative text-2xl mb-4">
         {{ $user['user']->name }}
         <div class="text-base">
-            @if($user['today'])
-                Today: {{ $user['today']->weight }}@if($user['change'])@include('change', ['change' => $user['change']])@endif
+            Total: {{ $user['total']['difference'] }} lbs
+            ({{ round($user['total']['percentage'], 2) }}%)
+            @include('change', ['change' => $user['total']['change']])<br>
+            @if ($user['today'])
+                Today: {{ $user['today']->weight }} lbs
+                @if ($user['change'])
+                    @include('change', ['change' => $user['change']])
+                @endif
             @else
                 Enter weight
             @endif
@@ -14,9 +20,13 @@
         @csrf
         <div class="relative">
             <label for="weight" class="sr-only">Enter weight</label>
-            <input type="number" step="any" id="weight" name="weight" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="number" step="any" id="weight" name="weight"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             <button type="submit" class="absolute right-0 top-0 p-2"><span class="sr-only">Submit</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-6 w-6"><path d="M10 .4C4.697.4.399 4.698.399 10A9.6 9.6 0 0 0 10 19.601c5.301 0 9.6-4.298 9.6-9.601 0-5.302-4.299-9.6-9.6-9.6zm-.001 17.2a7.6 7.6 0 1 1 0-15.2 7.6 7.6 0 1 1 0 15.2zM10 8H6v4h4v2.5l4.5-4.5L10 5.5V8z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-6 w-6">
+                    <path
+                        d="M10 .4C4.697.4.399 4.698.399 10A9.6 9.6 0 0 0 10 19.601c5.301 0 9.6-4.298 9.6-9.601 0-5.302-4.299-9.6-9.6-9.6zm-.001 17.2a7.6 7.6 0 1 1 0-15.2 7.6 7.6 0 1 1 0 15.2zM10 8H6v4h4v2.5l4.5-4.5L10 5.5V8z" />
+                </svg>
             </button>
         </div>
     </form>
@@ -24,18 +34,18 @@
     <div class="hidden sm:block">
         <table class="mt-4 table-fixed w-full">
             <thead>
-            <tr>
-                <th class="w-1/2 text-left" scope="col">Date</th>
-                <th class="w-1/2 text-left" scope="col">Weight</th>
-            </tr>
+                <tr>
+                    <th class="w-1/2 text-left" scope="col">Date</th>
+                    <th class="w-1/2 text-left" scope="col">Weight</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach($user['weights'] as $weight)
-                <tr>
-                    <td>{{ $weight->created_at->format('M d') }}</td>
-                    <td>{{ $weight->weight }}</td>
-                </tr>
-            @endforeach
+                @foreach ($user['weights'] as $weight)
+                    <tr>
+                        <td>{{ $weight->created_at->format('M d') }}</td>
+                        <td>{{ $weight->weight }} lbs</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
